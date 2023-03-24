@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 main().catch(err => console.log(err));
  
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1/fruitsDB');
+   await mongoose.connect('mongodb://127.0.0.1/fruitsDB');
   console.log("Connected");
  
   const fruitSchema = new mongoose.Schema({
@@ -19,10 +19,57 @@ async function main() {
     rating: 7,
     review: 'Pretty solid as a fruit.'
   });
+
+  const personSchema = new mongoose.Schema({
+    name: String,
+    age: Number,
+  });
+
+  const Person = mongoose.model("Person", personSchema);
+
+  const person = new Person({
+    name: "john",
+    age: 27,
+  });
   
-  fruit.save();
- 
- 
+  //fruit.save();
+
+  person.save();
+
+  const kiwi = new Fruit({
+    name: "kiwi",
+    rating:10,
+    review: "pretty good"
+  });
+
+  const banana = new Fruit({
+    name: "banana",
+    rating: 9,
+    review: "good"
+  });
+
+  //Fruit.insertMany([kiwi, banana])
+   //.then(function (){
+   // console.log("successfully saved");
+  // })
+   //.catch(function(err){
+    //console.log(err);
+   //});
+
+   Fruit.find()
+   .then(function (fruits) {
+    
+    
+     fruits.forEach(function(fruit){
+      console.log(fruit.name);
+     });
+})
+   .catch(function (err) {
+     console.log(err);
+     
+
+    
+});
 //Remember that all the code has to be within the main function in order for it to work (except for the 'require' thing of course)
 }
 
