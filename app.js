@@ -7,36 +7,61 @@ async function main() {
   console.log("Connected");
  
   const fruitSchema = new mongoose.Schema({
-    name: String,
-    rating: Number,
+    name: {
+      type: String,
+      required: [true,"please check entry, no name specified"]
+    },
+    rating: {
+      type: Number,
+      min: 1,
+      max: 10
+    },
     review: String
   });
  
   const Fruit = mongoose.model('Fruit', fruitSchema);
   
   const fruit = new Fruit({
-    name: 'Apple',
-    rating: 7,
+    name: "banana",
+    rating: 9,
     review: 'Pretty solid as a fruit.'
   });
 
   const personSchema = new mongoose.Schema({
     name: String,
     age: Number,
+    favouriteFruit: fruitSchema
+    
+  });
+
+  const pineapple = new Fruit({
+    name: "pineapple",
+    rating:9,
+    review: "great fruit"
+  });
+  pineapple.save();
+
+  const mango = new Fruit({
+    name: "mango",
+    rating: 8,
+    review: " great fruit"
   });
 
   const Person = mongoose.model("Person", personSchema);
 
   const person = new Person({
     name: "john",
-    age: 27,
+    age: 17,
+    favouriteFruit: mango
   });
   
   //fruit.save();
 
+  mango.save();
+
   person.save();
 
-  const kiwi = new Fruit({
+ /* const kiwi = new Fruit({
     name: "kiwi",
     rating:10,
     review: "pretty good"
@@ -48,13 +73,13 @@ async function main() {
     review: "good"
   });
 
-  //Fruit.insertMany([kiwi, banana])
-   //.then(function (){
-   // console.log("successfully saved");
-  // })
-   //.catch(function(err){
-    //console.log(err);
-   //});
+  Fruit.insertMany([kiwi, banana])
+   .then(function (){
+    console.log("successfully saved");
+   })
+   .catch(function(err){
+    console.log(err);
+   });*/
 
    Fruit.find()
    .then(function (fruits) {
@@ -66,10 +91,31 @@ async function main() {
 })
    .catch(function (err) {
      console.log(err);
-     
-
-    
 });
+
+Fruit.updateOne({_id:"641ebeb681da5571dec42c52"},{name: "kela"})
+ .then(function(){
+  console.log("successfully added");
+ })
+ .catch(function(err){
+  console.log(err);
+ });
+
+ Fruit.deleteOne({_id:"641ec067303b5481a582faea"})
+  .then(function(){
+    console.log("successfully deleted");
+  })
+  .catch(function(err){
+    console.log(err);
+  });
+
+  //Person.deleteMany({name:"john"})
+   //.then(function(){
+    //console.log("succefully same name person");
+   //})
+   //.catch(function(err){
+    //console.log(err);
+  // });
 //Remember that all the code has to be within the main function in order for it to work (except for the 'require' thing of course)
 }
 
